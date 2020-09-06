@@ -11,9 +11,6 @@ public class PlayerController : MonoBehaviour
     public float PlayerSpeed;
     private float horizontalInput;
 
-    //gravity
-    public float GravityTimer = 3f;
-
     //jump
     [HideInInspector] public bool canJump;
     public float jumpForce = 40f;
@@ -21,24 +18,23 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         playerSprite = GetComponentInChildren<SpriteRenderer>();
-        StartCoroutine("GravityShift");
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         Movement();
         Jump();
     }
-#region Movement
     void Movement()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(horizontalInput * PlayerSpeed, rb.velocity.y);
         Rotaion();
     }
-#endregion
-#region ROTATION
+    #region ROTATION
     void Rotaion()
     {
         if (rb.gravityScale >= 0)
@@ -68,15 +64,8 @@ public class PlayerController : MonoBehaviour
         }
     }
     #endregion
-#region Gravity 
-    IEnumerator GravityShift()
-    {
-        yield return new WaitForSeconds(GravityTimer);
-        rb.gravityScale *= -1;
-        StartCoroutine("GravityShift");
-    }
- #endregion
-#region JUMP
+    
+    //JUMP
     void Jump()
     {
         if (canJump == true && Input.GetKeyDown(KeyCode.Space))
@@ -93,7 +82,6 @@ public class PlayerController : MonoBehaviour
 
         }
     }
-    
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.tag == "Ground")
@@ -109,5 +97,4 @@ public class PlayerController : MonoBehaviour
 
         }
     }
-#endregion
 }
