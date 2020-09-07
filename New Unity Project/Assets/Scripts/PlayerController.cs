@@ -6,19 +6,27 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
     private SpriteRenderer playerSprite;
+    PlayerGravity playerGravity;
 
     //Player Movement
     public float PlayerSpeed;
     private float horizontalInput;
 
     //jump
-    [HideInInspector] public bool canJump;
-    public float jumpForce = 40f;
+    private bool canJump;
+    public float jumpForce;
+            //hangtime
+    public float hangtime = .2f;
+    private float hangcounter;
+            //Jump Buffer
+    public float jumpBufferLength = .1f;
+    private float jumpBufferCount;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerSprite = GetComponentInChildren<SpriteRenderer>();
-        
+        playerGravity = FindObjectOfType<PlayerGravity>();
     }
 
     // Update is called once per frame
@@ -68,12 +76,22 @@ public class PlayerController : MonoBehaviour
     //JUMP
     void Jump()
     {
-        if (canJump == true && Input.GetKeyDown(KeyCode.Space))
+        //manage HangTime
+        if (canJump == true)
+        {
+            hangcounter = hangtime;
+        }
+        else
+        {
+            hangcounter -= Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && hangcounter >= 0)
         {
 
             if (rb.gravityScale > 0)
             {
-                rb.velocity = Vector2.up * jumpForce;
+                rb.velocity = Vector2.up *  jumpForce;
             }
             if (rb.gravityScale < 0)
             {
