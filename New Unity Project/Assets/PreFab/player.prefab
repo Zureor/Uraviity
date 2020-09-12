@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerSpeed: 10
-  jumpForce: 10
+  jumpForce: 15
   hangtime: 0.2
 --- !u!114 &7681929905461947351
 MonoBehaviour:
