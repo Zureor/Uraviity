@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer playerSprite;
     PlayerGravity playerGravity;
+    
 
     //Player Movement
     public float PlayerSpeed;
@@ -18,15 +19,13 @@ public class PlayerController : MonoBehaviour
             //hangtime
     public float hangtime = .2f;
     private float hangcounter;
-            //Jump Buffer
-    public float jumpBufferLength = .1f;
-    private float jumpBufferCount;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerSprite = GetComponentInChildren<SpriteRenderer>();
         playerGravity = FindObjectOfType<PlayerGravity>();
+        
     }
 
     // Update is called once per frame
@@ -42,7 +41,7 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(horizontalInput * PlayerSpeed, rb.velocity.y);
         Rotaion();
     }
-    #region ROTATION
+#region ROTATION
     void Rotaion()
     {
         if (rb.gravityScale >= 0)
@@ -72,8 +71,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     #endregion
-    
-    //JUMP
+#region Jump
     void Jump()
     {
         //manage HangTime
@@ -100,12 +98,14 @@ public class PlayerController : MonoBehaviour
 
         }
     }
+    #endregion
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.tag == "Ground")
         {
             canJump = true;
         }
+
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
@@ -115,4 +115,6 @@ public class PlayerController : MonoBehaviour
 
         }
     }
+    
+
 }
