@@ -5,25 +5,30 @@ using UnityEngine;
 public class Enemy : EnemyScript
 {
     private Vector3 currentTarget;
+    [HideInInspector]
+    public bool enemyisDead = false;
 
     void Start()
     {
-        currentTarget = PointA.position;
+        currentTarget = transform.position;
+        pointA = currentTarget.x;
+        pointB = currentTarget.x + range;
     }
     void Update()
     {
-        if (transform.position == PointA.position)
+        if (transform.position.x == pointA)
         {
-            currentTarget = PointB.position;
+            currentTarget.x = pointB;
         }
-        else if (transform.position == PointB.position)
+        if (transform.position.x == pointB)
         {
-            currentTarget = PointA.position;
+            currentTarget.x = pointA;
         }
         transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
     }
     public void Kill()
     {
+        enemyisDead = true;
         Destroy(this.gameObject);
     }
     
