@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyDestroy : MonoBehaviour
 {
     private Enemy enemy;
-    public bool enemyisDead = false;
+    
     void Start()
     {
         enemy = GetComponentInParent<Enemy>();
@@ -14,7 +14,7 @@ public class EnemyDestroy : MonoBehaviour
     {
         if(collision.collider.tag == "Player")
         {
-            enemyisDead = true;
+
             enemy.Kill();
         }
     }

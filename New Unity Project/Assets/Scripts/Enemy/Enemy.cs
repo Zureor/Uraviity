@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : EnemyScript
 {
     private Vector3 currentTarget;
+    [HideInInspector]
     public bool enemyisDead = false;
 
     void Start()
