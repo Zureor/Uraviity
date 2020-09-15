@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer playerSprite;
     PlayerGravity playerGravity;
-    
+    Enemy enemyScript;
 
     //Player Movement
     public float PlayerSpeed;
@@ -25,15 +25,14 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerSprite = GetComponentInChildren<SpriteRenderer>();
         playerGravity = FindObjectOfType<PlayerGravity>();
-        
+        enemyScript = FindObjectOfType<Enemy>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
         Movement();
-        Jump();
+        JumpMechanism();
     }
     void Movement()
     {
@@ -72,7 +71,7 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 #region Jump
-    void Jump()
+    void JumpMechanism()
     {
         //manage HangTime
         if (canJump == true)
@@ -86,16 +85,23 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && hangcounter >= 0)
         {
-
-            if (rb.gravityScale > 0)
-            {
-                rb.velocity = Vector2.up *  jumpForce;
-            }
-            if (rb.gravityScale < 0)
-            {
-                rb.velocity = Vector2.down * jumpForce;
-            }
-
+            Jump();
+        }
+        if (enemyScript.enemyisDead == true)
+        {
+            Jump();
+            enemyScript.enemyisDead = false;
+        }
+    }
+    void Jump()
+    {
+        if (rb.gravityScale > 0)
+        {
+            rb.velocity = Vector2.up * jumpForce;
+        }
+        if (rb.gravityScale < 0)
+        {
+            rb.velocity = Vector2.down * jumpForce;
         }
     }
     #endregion
@@ -105,6 +111,10 @@ public class PlayerController : MonoBehaviour
         {
             canJump = true;
         }
+        if (collision.collider.tag == "Enemy")
+        {
+            Destroy(this.gameObject);
+        }
 
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -112,7 +122,6 @@ public class PlayerController : MonoBehaviour
         if (collision.collider.tag == "Ground")
         {
             canJump = false;
-
         }
     }
     
